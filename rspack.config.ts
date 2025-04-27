@@ -9,9 +9,6 @@ import { createZip } from "./utils/zip.util.ts";
 // Target browsers, see: https://github.com/browserslist/browserslist
 const targets = ["chrome >= 87", "edge >= 88", "firefox >= 78", "safari >= 14"];
 const scriptFileDir = new Set([
-  "scriptFileList_earlyload",
-  "scriptFileList_inject_early",
-  "scriptFileList_preload",
   "scriptFileList",
 ]);
 
@@ -95,7 +92,7 @@ function devServer() {
           if (!devServer) {
             throw new Error("@rspack/dev-server is not defined");
           }
-          devServer.app?.get("/modList.json", (_, response) => {
+          devServer.app?.get("/modList.json", (_: any, response: { send: (arg0: string) => void }) => {
             console.log("get mod list");
             if (existsSync("./game/mods")) {
               const modList = readdirSync("./game/mods/").filter(item => item.endsWith(".zip")).map(item => `/mods/${item}`);
@@ -112,7 +109,8 @@ function devServer() {
           });
           const filename = `${name}-${version}.mod.zip`;
 
-          devServer.app?.get(`/${filename}`, (_, response) => {
+          // eslint-disable-next-line node/prefer-global/buffer
+          devServer.app?.get(`/${filename}`, (_: any, response: { send: (arg0: Buffer<ArrayBufferLike>) => void }) => {
             rspack(commonConfig(), (_err, _stats) => {
               // eslint-disable-next-line node/prefer-global/process
               createZip(process.cwd(), filename).then((zip) => {

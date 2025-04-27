@@ -1,6 +1,9 @@
 export {};
 
 declare global {
+  interface SugarCubeStoryVariables {
+    ws_url?: string; // 添加 ws_url 属性
+  }
   interface Window {
     modUtils: ModUtils;
     modSC2DataManager: SC2DataManager;
@@ -17,14 +20,6 @@ declare global {
     has: (name: string) => any;
     get: (name: string) => any;
   };
-
-  interface Window {
-    aaaaabbbbbccccc: (key: string) => string;
-    ModWebpackExampleTs_patchLinkButton: (
-      MacroRef: typeof Macro,
-      ScriptingRef: typeof Scripting,
-    ) => void;
-  }
 
   const Wikifier: WikifierAPI;
   const Scripting: ScriptingAPI;
